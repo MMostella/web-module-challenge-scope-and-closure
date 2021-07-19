@@ -28,11 +28,18 @@ console.log(processFirstItem(['foo','bar'],function(str){return str+str}));
   Study the code for counter1 and counter2, then answer the questions below.
   
   1. What is the difference between counter1 and counter2?
+
+  -Counter1 resets to 0 with every invokation.
   
   2. Which of the two uses a closure? How can you tell?
+
+  -Counter 1 uses a closure because it pulls a value from outside the local scope
   
   3. In what scenario would the counter1 code be preferable? In what scenario would 
-     counter2 be better?  
+     counter2 be better? 
+     
+     -Counter1 would be more preferable if it is being used with no need for storage of the result.
+     -Counter2 would be better if you just wanted to add 1 to an already designated element.  
 */
 
 // counter1 code
@@ -62,9 +69,12 @@ Use the inning function below to do the following:
 NOTE: This will be a callback function for the tasks below
 */
 
-function inning(/*Code Here*/){
-    /*Code Here*/
+function inning(){
+  return Math.ceil(Math.random()*2);
 }
+
+
+console.log('Task 2:', inning());
 
 
 /* ⚾️⚾️⚾️ Task 3: finalScore() ⚾️⚾️⚾️
@@ -81,18 +91,33 @@ Use the finalScore function below to do the following:
 }
 */ 
 
-function finalScore(/*code Here*/){
-  /*Code Here*/
+function finalScore(inningcb, played){
+  const totalGame = [];
+  let home = 0;
+  let away = 0;
+  for (let i = 0; i < played; i++){
+    home = home + inningcb;
+    away = away + inningcb;
+    totalGame.push(`Inning ${i + 1}: Away ${home}, Home ${away}`);
+  }
+  return totalGame;
 }
+
+console.log('Task 3:', finalScore(inning(), 9));
 
 /* ⚾️⚾️⚾️ Task 4: getInningScore() ⚾️⚾️⚾️
 Use the getInningScore() function below to do the following:
   1. Receive a callback function - you will pass in the inning function from task 2 as your argument 
   2. Return an object with a score for home and a score for away that populates from invoking the inning callback function */
 
-function getInningScore(/*Your Code Here */) {
-  /*Your Code Here */
-}
+  function getInningScore(inningcb) {
+    let home = 0;
+    let away = 0;
+      return {
+        Home: home + inningcb,
+        Away: away + inningcb
+      }
+    }
 
 
 /* ⚾️⚾️⚾️ Task 5: scoreboard() ⚾️⚾️⚾️
