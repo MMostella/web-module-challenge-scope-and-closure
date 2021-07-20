@@ -33,7 +33,7 @@ console.log(processFirstItem(['foo','bar'],function(str){return str+str}));
   
   2. Which of the two uses a closure? How can you tell?
 
-  -Counter 1 uses a closure because it pulls a value from outside the local scope
+  -Counter2 used a closure. one scope reaches into another scope for a value.
   
   3. In what scenario would the counter1 code be preferable? In what scenario would 
      counter2 be better? 
@@ -70,7 +70,7 @@ NOTE: This will be a callback function for the tasks below
 */
 
 function inning(){
-  return Math.ceil(Math.random()*2);
+  return Math.floor(Math.random()*3);
 }
 
 
@@ -92,18 +92,41 @@ Use the finalScore function below to do the following:
 */ 
 
 function finalScore(inningcb, played){
-  const totalGame = [];
-  let home = 0;
-  let away = 0;
+  const currentScore = {
+  'Away': 0,
+  'Home': 0
+  };
   for (let i = 0; i < played; i++){
-    home = home + inningcb;
-    away = away + inningcb;
-    totalGame.push(`Inning ${i + 1}: Away ${home}, Home ${away}`);
+    currentScore.Home += inningcb();
+    currentScore.Away += inningcb();
   }
-  return totalGame;
+  return currentScore;
 }
 
-console.log('Task 3:', finalScore(inning(), 9));
+// function finalScore (inningcb, played){
+//   let home = [];
+//   let away = [];
+//   const final = {
+//     Home: 0,
+//     Away: 0
+//   }
+
+//   for (let i = 0; i < played; i++){
+//     home.push(inningcb());
+//     away.push(inningcb());
+//   }
+
+//   for (let x = 0; x < played; x++){
+//     final.Home = final.Home + home(x);
+//     final.Away = final.Away + away(x);
+//     }
+  
+//   console.log(home);
+//   console.log(away);
+//   return finalScore;
+//  }
+
+console.log('Task 3:', finalScore(inning, 9));
 
 /* ⚾️⚾️⚾️ Task 4: getInningScore() ⚾️⚾️⚾️
 Use the getInningScore() function below to do the following:
@@ -111,15 +134,14 @@ Use the getInningScore() function below to do the following:
   2. Return an object with a score for home and a score for away that populates from invoking the inning callback function */
 
   function getInningScore(inningcb) {
-    let home = 0;
-    let away = 0;
       return {
-        Home: home + inningcb,
-        Away: away + inningcb
+        'Home': inningcb(),
+        'Away': inningcb()
       }
     }
 
-
+console.log('Task 4:', getInningScore(inning));
+    
 /* ⚾️⚾️⚾️ Task 5: scoreboard() ⚾️⚾️⚾️
 Use the scoreboard function below to do the following:
   1. Receive the callback function `getInningScore` from Task 4
@@ -159,13 +181,36 @@ Use the scoreboard function below to do the following:
   "Inning 9: Away 1 - Home 1", 
   "This game will require extra innings: Away 10 - Home 10"
 ]  
+
+4. Return an array where each of it's index values equals a string stating the
+  Home and Away team's scores for each inning.  Not the cummulative score.
+  5. If there's a tie at the end of the innings, add this message containing the score to the end of the array:  "This game will require extra innings: Away 12 - Home 12"  (see tie example below)
+     If there isn't a tie, add this message to the end of the array: "Final Score: Away 13 - Home 11"  (see no tie example below)
   */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
-}
+function scoreboard(inningScorecb, inningcb, played) {
+  let allGameInnings = [];
+  let totalHome = 0;
+  let totalAway = 0;
+  let homeScore = 0;
+  let awayScore = 0;
+  for (let i = 0; i < played; i++){
+    const currentScore = inningScorecb(inningcb);
+    homeScore = homeScore + currentScore.Home;
+    awayScore = currentScore.Away;
+    allGameInnings.push(`Inning ${[i + 1]}: Away ${awayScore} - Home ${totalHome}`)
+    totalAway = totalAway += currentScore.Away;
+    totalHome = totalHome += currentScore.Home;
+  }
+  if (totalHome === totalAway){
+    allGameInnings.push(`This game will require extra innings: Away ${totalAway} - Home ${totalHome}`)
+  } else {
+    allGameInnings.push(`Final Score: Away ${totalAway} - Home ${totalHome}`);
+  }
+  return allGameInnings;
+ }
 
-
+console.log('Task 5:', scoreboard(getInningScore, inning, 1));
 
 
 /* 🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑 */
